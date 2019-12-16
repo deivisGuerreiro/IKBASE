@@ -1,88 +1,85 @@
+//Configuração do Express.js
 const express = require('express'),
-    bodyParser = require('body-parser'),
-    app = express(),
-    port = 8080;
+  bodyParser = require('body-parser'),
+  app = express(),
+  port = 8080;
 
-const feed = require("./js/controllers/feed")
-
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
+
+// Constantes dos controllers
+const feed = require("./js/controllers/feed")
+const comentario = require("./js/controllers/comentario")
+const user = require("./js/controllers/user")
 
 //ROTAS IKBASE
 //FEED
-app.post('/', (req, res) => {
-  res.render('index')  
+app.get('/', (req, res) => {
+  //Abre a pagina inicial
+  res.render('index')
 });
 
-app.post('/getPost', (req, res) => {
-  const cidadeR = feed.prefeitoDaCidade(req.params.id).then(aux => res.json(aux))
- 
+app.post('/create/post', (req, res) => {
+  //Cria uma postagem
+  const pastagem = feed.insert(req.body.id_user, req.body.duvida,req.body.tecnologias).then(postagem => res.json(postagem))
 });
 
-app.put('/empresa', (req, res) => {
-  //ATUALIZAR EMPRESA PELO ID
-  const empresaR = empresa.update(req.body.nome , req.body.cnpj, req.body.id).then(aux => res.json(aux))
+app.get('/getAll/post', (req, res) => {
+  //Pega todos os posts
+  const postagens = feed.getAll().then(postagens => res.json(postagens))
 });
 
-app.delete('/empresa/:id', (req, res) => {
-  //INFORMAR O ID DA EMPRESA A SER DELETADA
-  const empresaR = empresa.deletar(req.params.id).then(aux => res.json(aux))
-})
-
-app.get('/empresa/cidades/:id', (req, res) => {
-  //INFORMAR O ID DA EMPRESA PARA VER SUAS CIDADES
-  const empresaR = empresa.cidadesDaEmpresa(req.params.id).then(aux => res.json(aux))
-})
-
-app.get('/empresa/sede/:id', (req, res) => {
-  //INFORMAR O ID DA EMPRESA PARA VER SUA SEDE
-  const empresaR = empresa.nomeDaSedeDaEmpresa(req.params.id).then(aux => res.json(aux))
-})
-
-//fim ROTAS EMPRESAS
-
-//ROTAS CIDADES
-
-app.post('/cidade', (req, res) => {
-  //CRIAR CIDADE ATRAVES DO JSON
-  //EX: {"nome": "cidade", "estado_id": 4, "area" : 200}
-  const cidadeR = cidade.insert(req.body.nome , req.body.estado_id, req.body.area).then(aux => res.json(aux))
+app.put('/update/post', (req, res) => {
+  //Atualiza uma postagem pelo (id)
+  const pastagem = feed.update(req.body.duvida, req.body.tecnologias, req.body.id).then(postagem => res.json(postagem))
 });
 
-app.put('/cidade', (req, res) => {
-  //ATUALIZAR CIDADE PELO ID
-  const cidadeR = cidade.update(req.body.nome , req.body.estado_id, req.body.area, req.body.id).then(aux => res.json(aux))
+app.delete('/delete/post/:id', (req, res) => {
+  //Deleta uma postagem pelo (id) na url
+  const postagem = feed.deletar(req.params.id).then(resposta => res.json(resposta))
+})
+
+app.get('/get/post/:id', (req, res) => {
+  //Pega as informações de uma postagem pelo (id) que está url
+  const postagem = feed.get(req.params.id).then(postagem => res.json(postagem))
+})
+//fim ROTAS FEED
+
+
+
+
+
+
+//ROTAS Usuario
+app.post('/create/user', (req, res) => {
+  //Cria um user
+  const user = user.insert(req.body.nome, req.body.cnpj, req.body.id).then(user => res.json(user))
 });
 
-app.delete('/cidade/:id', (req, res) => {
-  //INFORMAR O ID DA CIDADE A SER DELETADA
-  const cidadeR = cidade.deletar(req.params.id).then(aux => res.json(aux))
+app.get('/getAll/users', (req, res) => {
+  //Pega todos os users
+  const users = user.getAll().then(users => res.json(users))
+});
+
+app.put('/update/user', (req, res) => {
+  //Atualiza um user pelo (id)
+  const user = user.update(req.body.nome, req.body.cnpj, req.body.id).then(user => res.json(user))
+});
+
+app.delete('/delete/user/:id', (req, res) => {
+  //Deleta um user pelo (id) na url
+  const user = user.deletar(req.params.id).then(resposta => res.json(resposta))
 })
 
-app.get('/cidade/prefeito/:id', (req, res) => {
-  //INFORMAR O ID DA CIDADE PARA VER SEU PREFEITO
-  const cidadeR = cidade.prefeitoDaCidade(req.params.id).then(aux => res.json(aux))
+app.get('/get/user/:id', (req, res) => {
+  //Pega as informações de um user pelo (id) que está url
+  const user = user.get(req.params.id).then(user => res.json(user))
 })
 
-app.get('/cidade/siglaEstado/:id', (req, res) => {
-  //INFORMAR O ID DA CIDADE PARA VER A SIGLA DO ESTADO
-  const cidadeR = cidade.siglaDoEstado(req.params.id).then(aux => res.json(aux))
-})
+//fim ROTAS USER
 
-//fim ROTAS CIDADES
 
+//Executa o servidor
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
-
-
-
-//empresa.insert("teste",667)
-//empresa.update("teste",6689,14)
-//empresa.cidadesDaEmpresa(2);
-//empresa.nomeDaSedeDaEmpresa(1);
-//empresa.deletar(14);
-
-//cidade.insert("minha cidade",4,200)
-//cidade.update("teste",4,666,4)
-//cidade.prefeitoDaCidade(2);
-//cidade.siglaDoEstado(4);
-//cidade.deletar(4);
