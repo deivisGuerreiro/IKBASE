@@ -3,23 +3,20 @@ const express = require('express'),
     app = express(),
     port = 8080;
 
-const empresa = require("./manipulaEmpresa")
-const cidade = require("./manipulaCidade")
+const feed = require("./js/controllers/feed")
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //ROTAS IKBASE
+//FEED
 app.post('/', (req, res) => {
   res.render('index')  
 });
 
-app.post('/empresa', (req, res) => {
-  //CRIAR EMPRESA ATRAVES DO JSON
-  //EX: {"nome": "cidade", "cnpj": 444}
-  empresa.insert(req.body.nome , req.body.cnpj).then(aux => res.json(aux))
-  
-   
+app.post('/getPost', (req, res) => {
+  const cidadeR = feed.prefeitoDaCidade(req.params.id).then(aux => res.json(aux))
+ 
 });
 
 app.put('/empresa', (req, res) => {
