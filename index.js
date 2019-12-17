@@ -81,5 +81,37 @@ app.get('/get/user/:id', (req, res) => {
 //fim ROTAS USER
 
 
+
+
+
+//FEED
+
+app.post('/create/comentario', (req, res) => {
+  //Cria uma postagem
+  const pastagem = feed.insert(req.body.id_user, req.body.duvida,req.body.tecnologias).then(postagem => res.json(postagem))
+});
+
+app.get('/getAll/comentario', (req, res) => {
+  //Pega todos os posts
+  const postagens = feed.getAll().then(postagens => res.json(postagens))
+});
+
+app.put('/update/comentario', (req, res) => {
+  //Atualiza uma postagem pelo (id)
+  const pastagem = feed.update(req.body.duvida, req.body.tecnologias, req.body.id).then(postagem => res.json(postagem))
+});
+
+app.delete('/delete/comentario/:id', (req, res) => {
+  //Deleta uma postagem pelo (id) na url
+  const postagem = feed.deletar(req.params.id).then(resposta => res.json(resposta))
+})
+
+app.get('/get/comentario/:id', (req, res) => {
+  //Pega as informações de uma postagem pelo (id) que está url
+  const postagem = feed.get(req.params.id).then(postagem => res.json(postagem))
+})
+//fim ROTAS FEED
+
+
 //Executa o servidor
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));

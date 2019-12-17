@@ -4,8 +4,12 @@ const getAll = async () => {
 
   const query = "select * from postagem"
   result = await db.query(query)
-
-  console.log(result.rows);
+  for(linha of result.rows){
+    const query2 = "select * from postagem_tecnologia where postagem_id = $1";
+    result2 = await db.query(query2,[linha.id])
+    linha.tecnologias =result2.rows
+    console.log(linha)
+  }
   return result.rows
 }
 
@@ -23,19 +27,26 @@ const insert = async (id_user,duvida,tecnologias) => {
   }
 
   
-  return result.rows
+  return true
 }
 
-const update = async (nome,email,id) => {
+const update = async (duvida,tecnologias,id) => {
 
-  const verifica = "select * from usuario where id = $1"
+  const verifica = "select * from postagem where id = $1"
   var result = await db.query(verifica,[id])
   if(!result.rows.length > 0){
     console.log("ITEM INEXISTENTE");
     return "ITEM INEXISTENTE"
   }
-  const query = "update usuario set nome = $1, email = $2 where id=$3"
-  result = await db.query(query,[nome,email,id])
+  const query = "update postagem set duvida = $1 where id=$2"
+  result = await db.query(query,[duvida,id])
+  const query3 = "delete from postagem_tecnologia where postagem_id=$1"
+  await db.query(query3,[id])
+  for(linha of tecnologias){
+    const query2 = "insert into postagem_tecnologia (postagem_id,tecnologia_id) values ($1,$2)"
+    result2 = await db.query(query2,[id,linha.id])
+    
+  }
 
   console.log(result.rows);
   return result.rows
@@ -43,14 +54,16 @@ const update = async (nome,email,id) => {
 
 const deletar = async (id) => {
 
-  const verifica = "select * from usuario where id = $1"
+  const verifica = "select * from postagem where id = $1"
   var result = await db.query(verifica,[id])
   if(!result.rows.length > 0){
     console.log("ITEM INEXISTENTE");
     return "ITEM INEXISTENTE"
   }
-  const query = "delete from usuario where id=$1"
+  const query = "delete from postagem where id=$1"
   await db.query(query,[id])
+  const query3 = "delete from postagem_tecnologia where postagem_id=$1"
+  await db.query(query3,[id])
 
   console.log("ITEM DELETADO");
   return "ITEM DELETADO"
@@ -60,9 +73,11 @@ const deletar = async (id) => {
 const get = async (id) => {
 
   var result
-  const query = "select * from usuario where id = $1";
+  const query = "select * from postagem where id = $1";
   result = await db.query(query,[id])
-
+  const query2 = "select * from postagem_tecnologia where postagem_id = $1";
+  result2 = await db.query(query2,[id])
+  result.rows[0].tecnologias =result2.rows
 
   return result.rows
   

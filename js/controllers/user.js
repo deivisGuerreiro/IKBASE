@@ -9,7 +9,7 @@ const getAll = async () => {
   return result.rows
 }
 
-const insert = async (nome,email,senha) => {
+const insert = async (id_user,duvida,tecnologias) => {
 
   const query = "insert into usuario (nome,email,senha) values ($1,$2,$3)"
   result = await db.query(query,[nome,email,senha])
