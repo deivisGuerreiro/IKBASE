@@ -10,9 +10,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Constantes dos controllers
-const feed = require("./js/controllers/feed")
-const comentario = require("./js/controllers/comentario")
-const user = require("./js/controllers/user")
+const feed = require("./js/controllers/backend/feed")
+const comentario = require("./js/controllers/backend/comentario")
+const user = require("./js/controllers/backend/user")
 
 //ROTAS IKBASE
 //FEED

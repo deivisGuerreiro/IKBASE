@@ -1,8 +1,8 @@
-const db = require("../../conexao.js")
+const db = require("../../../conexao.js")
 
 const getAll = async () => {
 
-  const query = "select * from postagem"
+  const query = "select * from postagem "
   result = await db.query(query)
   for(linha of result.rows){
     const query2 = "select * from postagem_tecnologia where postagem_id = $1";
