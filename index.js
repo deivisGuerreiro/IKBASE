@@ -34,7 +34,7 @@ app.get('/getAll/post', (req, res) => {
   const postagens = feed.getAll().then(postagens => res.json(postagens))
 });
 
-app.put('/update/post', (req, res) => { 
+app.put('/update/post', (req, res) => {  
   //Atualiza uma postagem pelo (id)
   const pastagem = feed.update(req.body.duvida, req.body.tecnologias, req.body.id).then(postagem => res.json(postagem))
 });
