@@ -1,4 +1,4 @@
-const db = require("../../conexao.js")
+const db = require("../../../conexao.js")
 
 const getAll = async () => {
 
