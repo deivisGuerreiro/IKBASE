@@ -41,7 +41,7 @@ const deletar = async (id) => {
 }
 
 const get = async (id) => {
-
+console.log('teste')
   var result
   const query = "select * from usuarios where id = $1";
   result = await db.query(query,[id])
