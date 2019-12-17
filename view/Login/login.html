@@ -17,14 +17,14 @@
             <legend>Logar-se</legend>
             <div class="form-group">
               <label for="email-login">E-mail</label>
-              <input id="email-login" placeholder="Seu Email" type="text" class="form-control"/>
+              <input id="email-login" placeholder="Seu Email" type="text" ng-model="usuario.email-login" class="form-control"/>
             </div>
             <div class="form-group">
               <label for="senha-login">Senha</label>
-              <input id="senha-login" value='' placeholder="Sua Senha" type="password" class="form-control"/>
+              <input id="senha-login" value='' placeholder="Sua Senha" type="password" ng-model="usuario.senha-login" class="form-control"/>
             </div>
             <div class="form-group text-center">
-              <input type="submit" class="btn btn-success btn-login-submit" value="Logar"/>
+              <input type="submit" class="btn btn-success btn-login-submit" onclick = "login(usuario)" value="Logar"/>
             </div>
           </form>
         </div>
