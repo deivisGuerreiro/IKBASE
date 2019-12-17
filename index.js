@@ -84,33 +84,30 @@ app.get('/get/user/:id', (req, res) => {
 
 
 
-//FEED
+//COMENTARIO
 
 app.post('/create/comentario', (req, res) => {
-  //Cria uma postagem
-  const pastagem = feed.insert(req.body.id_user, req.body.duvida,req.body.tecnologias).then(postagem => res.json(postagem))
+  //Cria um comentario
+  const coment = comentario.insert(req.body.id_postagem, req.body.id_user,req.body.resposta).then(coment => res.json(coment))
 });
 
-app.get('/getAll/comentario', (req, res) => {
-  //Pega todos os posts
-  const postagens = feed.getAll().then(postagens => res.json(postagens))
+app.get('/getAll/comentario/:id', (req, res) => {
+  //Pega todos os comentarios de uma publicação
+  const coments = comentario.getAll(req.params.id).then(coments => res.json(coments))
 });
 
 app.put('/update/comentario', (req, res) => {
-  //Atualiza uma postagem pelo (id)
-  const pastagem = feed.update(req.body.duvida, req.body.tecnologias, req.body.id).then(postagem => res.json(postagem))
+  //Atualiza um comentario pelo (id)
+  const coment = comentario.update(req.body.resposta, req.body.id).then(coment => res.json(coment))
 });
 
 app.delete('/delete/comentario/:id', (req, res) => {
-  //Deleta uma postagem pelo (id) na url
-  const postagem = feed.deletar(req.params.id).then(resposta => res.json(resposta))
+  //Deleta um comentario pelo (id) na url
+  const coment = comentario.deletar(req.params.id).then(resposta => res.json(resposta))
 })
 
-app.get('/get/comentario/:id', (req, res) => {
-  //Pega as informações de uma postagem pelo (id) que está url
-  const postagem = feed.get(req.params.id).then(postagem => res.json(postagem))
-})
-//fim ROTAS FEED
+
+//fim ROTAS COMENTARIO
 
 
 //Executa o servidor
