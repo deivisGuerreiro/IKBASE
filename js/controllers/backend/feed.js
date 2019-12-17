@@ -8,7 +8,9 @@ const getAll = async () => {
     const query2 = "select * from postagem_tecnologia where postagem_id = $1";
     result2 = await db.query(query2,[linha.id])
     linha.tecnologias =result2.rows
-    console.log(linha)
+    const queryComentario = "select * from comentario where postagem_id = $1";
+    coments = await db.query(queryComentario,[linha.id])
+    linha.comentarios =coments.rows
   }
   return result.rows
 }
@@ -78,6 +80,9 @@ const get = async (id) => {
   const query2 = "select * from postagem_tecnologia where postagem_id = $1";
   result2 = await db.query(query2,[id])
   result.rows[0].tecnologias =result2.rows
+  const queryComentario = "select * from comentario where postagem_id = $1";
+  coments = await db.query(queryComentario,[id])
+  result.rows[0].comentarios =coments.rows
 
   return result.rows
   
