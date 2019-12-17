@@ -4,6 +4,8 @@ const express = require('express'),
   app = express(),
   port = 8080;
 
+  const path = require('path');
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -18,7 +20,8 @@ const user = require("./js/controllers/backend/user")
 //FEED
 app.get('/', (req, res) => {
   //Abre a pagina inicial
-  res.render('index')
+  console.log("Teste")
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.post('/create/post', (req, res) => {
